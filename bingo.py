@@ -1,29 +1,34 @@
 from tkinter import *
 import random
+import config
 
 def buttonClick(button):
     current_color = button.cget("bg")
-    if current_color == "red":
-        button.config(bg="white")  # Zurück auf weiß
+    if current_color == config.buttoncolourmarked:
+        button.config(bg=config.buttoncolourdefault)
     else:
-        button.config(bg="red")  # Auf grün setzen
+        button.config(bg=config.buttoncolourmarked)
 
 Fenster = Tk()
-Fenster.title("Bingo")
-Fenster.geometry("860x860")
-#Fenster.resizable("false", "false")
+Fenster.title("Bingo-Tool")
+Fenster.geometry(config.windowgeometry)
+Fenster.iconbitmap("favicon.ico")
+
 
 Anzeige = Label(Fenster, text="Wir spielen BINGO!")
-Anzeige.pack()
+Anzeige.place(relx=0.5, anchor="n")
+
+Rahmen = Frame(Fenster)
+Rahmen.place(relx=0.5, rely=0.5, anchor="center")
 
 Buttons = []
-k = 0
+index = 0
 for i in range(5):
     for j in range(5):
-        Buttons.append(Button(Fenster, text=str(k)+"LOL"))
-        Buttons[k].place(x = 160 * j + 30, y = 160 * i + 30, width=150, height=150)
-        Buttons[k].config(command=lambda b=Buttons[k]: buttonClick(b))
-        k+=1
+        Buttons.append(Button(Rahmen, width=12, height=6, bg=config.buttoncolourdefault))
+        Buttons[index].config(command=lambda b=Buttons[index]: buttonClick(b))
+        Buttons[index].grid(row=i, column=j, padx=5, pady=5)
+        index+=1
         
 with open("bingosätze.txt", "r", encoding="utf-8") as file:
     saetze = [line.strip().replace("\t", "\n") for line in file]
@@ -31,4 +36,6 @@ with open("bingosätze.txt", "r", encoding="utf-8") as file:
 random.shuffle(saetze)
     
 for i in range(25):
-    Buttons[i].config(text=saetze[i], wraplength=150, justify="left", font=("Arial", 14))
+    Buttons[i].config(text=saetze[i], wraplength=125, justify="center", font=(config.textfont, config.textsize))
+    
+Fenster.mainloop()
