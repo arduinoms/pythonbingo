@@ -1,0 +1,10 @@
+button:
+  colourdefault: '#555555'
+  colourmarked: '#3c5e00'
+  colourtext: white
+text:
+  textfont: Arial
+  textsize: 14
+window:
+  darkmode: true
+  windowgeometry: 800x830
